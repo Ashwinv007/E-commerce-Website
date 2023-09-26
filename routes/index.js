@@ -20,7 +20,7 @@ router.get('/', function(req, res, next) {
     image: 'https://www.boat-lifestyle.com/cdn/shop/files/SmartRing-FI02_1500x.png?v=1692966075'
   }
   ]
-  res.render('index', { products });
+  res.render('index', { products, admin:false });
 });
 
 
