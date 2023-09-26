@@ -1,6 +1,9 @@
 <section>
     <div class="container">
-        <table class="table">
+        <div class="row mt-4">
+            <a href="admin/add-product" class = 'btn btn-success ml-auto'>Add Product</a>
+        </div>
+        <table class="table mt-5" >
   <thead>
     <tr>
       <th scope="col">No</th>
@@ -9,12 +12,14 @@
     <th scope="col">Category</th>
       <th scope="col">Price</th>
 
+      <th scope="col">Image</th>
+
     </tr>
   </thead>
   <tbody>
     {{#each products}}
     <tr>
-      <th scope="row">this</th>
+      <th scope="row">1</th>
       <td>{{this.name}}</td>
       <td>{{this.description}}</td>
       <td>{{this.category}}</td>

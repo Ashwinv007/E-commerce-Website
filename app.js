@@ -11,6 +11,7 @@ var adminRouter = require('./routes/admin');
 
 
 var app = express();
+var fileUpload = require('express-fileupload')
 app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname + '/views/layout/',partialsDir:__dirname + '/views/partials/'}))
 
 // view engine setup
@@ -22,6 +23,7 @@ app.use(express.json());
 app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
+app.use(fileUpload())
 
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
