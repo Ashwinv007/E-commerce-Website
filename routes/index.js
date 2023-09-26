@@ -15,12 +15,12 @@ router.get('/', function(req, res, next) {
   {
     name: 'Boat Ring',
     category : 'Electronic Accessories',
-    descripton : 'Futuristic Ring',
+    description : 'Futuristic Ring',
     price: '8999 /-',
     image: 'https://www.boat-lifestyle.com/cdn/shop/files/SmartRing-FI02_1500x.png?v=1692966075'
   }
   ]
-  res.render('index', { title: 'Express' });
+  res.render('index', { products });
 });
 
 
