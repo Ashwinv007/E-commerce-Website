@@ -10,5 +10,11 @@ module.exports={
 
         })
 
+    },
+    doLogin:(userData)=>{
+        let loginstatus = false;
+        let response = {}
+
+        let user = await db.get().collection()(collections.USER_COLLECTION).findOne
     }
 }
