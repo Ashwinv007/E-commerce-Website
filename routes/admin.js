@@ -1,6 +1,5 @@
 var express = require('express');
 var router = express.Router();
-var productHelper = require('../helpers/product-helpers.js');
 const productHelpers = require('../helpers/product-helpers.js');
 
 /* GET users listing. */
