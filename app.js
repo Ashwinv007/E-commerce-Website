@@ -12,6 +12,7 @@ var adminRouter = require('./routes/admin');
 
 var app = express();
 var fileUpload = require('express-fileupload')
+var db = require('./config/connection')
 app.engine('hbs',hbs.engine({extname:'hbs',defaultLayout:'layout',layoutsDir:__dirname + '/views/layout/',partialsDir:__dirname + '/views/partials/'}))
 
 // view engine setup
@@ -24,7 +25,11 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload())
+db.connect((err)=>{
+  if (err)console.log('Error connecting to database' + err)
+  else console.log('Connected to database')
 
+})
 app.use('/', usersRouter);
 app.use('/admin', adminRouter);
 
