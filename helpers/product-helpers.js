@@ -1,5 +1,6 @@
 var db = require('../config/connection')
-
+var collection = require('../config/collections')
+const collections = require('../config/collections')
 module.exports={
 
   addProduct:(product,callback)=>{
@@ -11,7 +12,15 @@ module.exports={
 
     })
 
-  }
+  },
 
+  getAllProducts:()=>{
+    return new Promise(async(resolve,reject)=>{
+      let product = await db.get().collection(collections.PRODUCT_COLLECTION).find().toArray()
+      resolve(product)
+
+
+})
+  },
 
 }
