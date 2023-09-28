@@ -35,6 +35,9 @@ router.get('/', function(req, res, next) {
 
    router.get('/signup', (req,res)=>{
     res.render('user/signup')
+    req.session.loggedIn=true
+    req.session.user=response
+    res.redirect('/')
    })
 
    router.post('/signup', (req,res)=>{

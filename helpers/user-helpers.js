@@ -1,6 +1,7 @@
 var db = require('../config/connection')
 const collections = require('../config/collections')
 const bcrypt = require('bcrypt')
+const { ObjectId } = require('mongodb')
 module.exports={
     doSignup:(userData)=>{
         return new Promise(async(resolve,reject)=>{
@@ -38,5 +39,15 @@ module.exports={
         }
 
     })
+    },
+    getCartProducts:(userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            db.get().collection(collections.CART_COLLECTION).find({userId:userId}).toArray().aggregate([
+                {
+                    $match:{user:ObjectId(userId)}
+                },
+                
+            ])
+        })
     }
 }
