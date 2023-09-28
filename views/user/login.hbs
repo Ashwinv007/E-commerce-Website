@@ -39,7 +39,7 @@
     <form action="/login" method="post">
     {{#if loginErr}}
     
-    <p class="error" style="color: red">Invalid username or password.</p>
+    <p class="error" style="color: red">{{loginErr}}</p>
     {{/if}}
         <h2 class="text-center">Log in</h2>       
         <div class="form-group">
