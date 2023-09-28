@@ -4,6 +4,7 @@ var path = require('path');
 var cookieParser = require('cookie-parser');
 var logger = require('morgan');
 var hbs=require('express-handlebars');
+var session = require('express-session')
 
 
 var usersRouter = require('./routes/users');
@@ -25,6 +26,10 @@ app.use(express.urlencoded({ extended: false }));
 app.use(cookieParser());
 app.use(express.static(path.join(__dirname, 'public')));
 app.use(fileUpload())
+app.use(session({
+  secret: 'Key',
+  cookie: {maxAge: 600000}
+}))
 db.connect((err)=>{
   if (err)console.log('Error connecting to database' + err)
   else console.log('Connected to database')

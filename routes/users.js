@@ -5,9 +5,11 @@ const userHelpers = require('../helpers/user-helpers.js')
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
+  let user = req.session.user
+  console.log(user);
   
   productHelpers.getAllProducts().then((product)=>{
-    res.render('user/view-products', {admin:false , product})
+    res.render('user/view-products', {admin:false , product,user})
 
 
    })});
@@ -29,6 +31,8 @@ router.get('/', function(req, res, next) {
    router.post('/login', (req,res)=>{
     userHelpers.doLogin(req.body).then((response)=>{
       if(response.status){
+        req.session.loggedIn = true
+        req.session.user = response.user
         res.redirect('/')
       }else{
         res.redirect('/login')
@@ -38,6 +42,12 @@ router.get('/', function(req, res, next) {
     
    })
 
+   router.get('/logout', (req,res)=>{
+    req.session.destroy()
+      res.redirect('/')
+   })
+    
+   
 
 
 module.exports = router;
