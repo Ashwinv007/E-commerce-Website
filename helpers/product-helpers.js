@@ -33,6 +33,10 @@ module.exports={
     })
   },
 
+  getProductDetails:()=>{
+    
+  }
+
 
 
 }
