@@ -22,11 +22,11 @@ router.post('/add-product', (req,res)=>{
   console.log(req.body)
   console.log(req.files.productImage)
   
-  productHelper.addProduct(req.body, (id)=>{
+  productHelpers.addProduct(req.body, (id)=>{
     let image = req.files.productImage
     image.mv('./public/product-images/'+id+'.jpg', (err,done)=>{
       if(!err){
-            res.render('admin/add-product')
+            res.redirect('/admin')
 
 
       }else{
@@ -45,10 +45,10 @@ router.get('/delete-product/:id', function(req,res){
   })
 })
 
-router.get('/edit-product/:id', async function(req,res){
+router.get('/edit-product/:id', async (req,res)=>{
   let product =await productHelpers.getProductDetails(req.params.id)
   console.log(product)
-  res.render('admin/edit-product', { product})
+  res.render('admin/edit-product',{product})
 
 })
 
@@ -58,10 +58,21 @@ router.post('/edit-product/:id',(req,res)=>{
   productHelpers.updateProduct(id,req.body).then(()=>{
   res.redirect('/admin')
 
-  if(req.files.productImage){
-    let image = req.files.productImage
-    image.mv('./public/product-images/'+id+'.jpg')
-  }
+  let image = req.files.productImage
+  image.mv('./public/product-images/'+id+'.jpg', (err,done)=>{
+    if(!err){
+          res.render('admin/add-product')
+
+
+    }else{
+      console.log('Error occured while Image storing '+ err)
+    }
+
+  })
+  // if(req.files.productImage){
+  //   let image = req.files.productImage
+  //   image.mv('./public/product-images/'+id+'.jpg')
+  // }
 })
 })
 module.exports = router;
