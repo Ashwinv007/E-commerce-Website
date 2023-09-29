@@ -46,8 +46,21 @@ module.exports={
                 {
                     $match:{user:ObjectId(userId)}
                 },
+                {
+                    $lookup:{
+                        from: collections.CART_COLLECTION,
+                        let:{prodList:'$products'},
+                        pipeline:[
+                            {$match:{
+                                $expr:{
+                                    $in:['$_id',"$$prodList"]
+
+                            }}}], as:'cartItems'
+                    }
+                }
                 
-            ])
+            ]).toArray()
+            resolve(cartItems[0].cartItems)
         })
     }
 }
