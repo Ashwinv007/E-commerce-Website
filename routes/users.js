@@ -67,10 +67,20 @@ router.get('/', function(req, res, next) {
       res.redirect('/')
    })
 
-   router.get('/cart', verifyLogin, (req,res)=>{
+   router.get('/cart', verifyLogin,async (req,res)=>{
+    let products = await userHelpers.getCartProducts(req.session.user._id)
+    console.log(products)
     res.render('user/cart')
    })
+
+   router.get('/add-to-cart/:id', verifyLogin,async (req,res)=>{
+    userHelpers.addToCart(req.params.id,req.session.user._id).then(()=>{
+      res.redirect('/')
+    })
     
+   })
+    
+   
    
 
 

@@ -1,7 +1,7 @@
 var db = require('../config/connection')
 const collections = require('../config/collections')
 const bcrypt = require('bcrypt')
-const { ObjectId } = require('mongodb')
+var objectId = require('mongodb').ObjectId
 module.exports={
     doSignup:(userData)=>{
         return new Promise(async(resolve,reject)=>{
@@ -40,22 +40,46 @@ module.exports={
 
     })
     },
+
+    addToCart:(proId,userId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let userCart = await db.get().collection(collections.CART_COLLECTION).findOne({user:objectId(userId)})
+            if(userCart){
+                db.get().collection(collections.CART_COLLECTION)
+                .updateOne({user:objectId(userId)},
+                {
+                    $push:{products:objectId(proId)}
+                }
+                ).then((response)=>{
+                    resolve()
+                })
+            }else{
+                let cartObj={
+                    user:objectId(userId),
+                    products:[objectId(proId)]
+                }
+                db.get().collection(collections.CART_COLLECTION).insertOne(cartObj).then((response)=>{
+                    resolve()
+                })
+            }
+        })
+    },
     getCartProducts:(userId)=>{
         return new Promise(async(resolve,reject)=>{
-            db.get().collection(collections.CART_COLLECTION).find({userId:userId}).toArray().aggregate([
+            let cartItems = await db.get().collection(collections.CART_COLLECTION).aggregate([
                 {
-                    $match:{user:ObjectId(userId)}
+                    $match:{user:objectId(userId)}
                 },
                 {
                     $lookup:{
-                        from: collections.CART_COLLECTION,
+                        from: collections.PRODUCT_COLLECTION,
                         let:{prodList:'$products'},
                         pipeline:[
                             {$match:{
                                 $expr:{
                                     $in:['$_id',"$$prodList"]
 
-                            }}}], as:'cartItems'
+                            }}}],as:'cartItems'
                     }
                 }
                 
