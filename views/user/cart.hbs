@@ -6,6 +6,8 @@
                     <th scope="col">Item</th>
                     <th scope="col">Title</th>
                     <th scope="col">Quantity</th>
+                    <th scope="col">Price</th>
+
                 </tr>
             </thead>
             <tbody>
@@ -13,15 +15,23 @@
                 <tr>
                     <td><img style="width:70px;height:70px" src="/product-images/{{this.product._id}}.jpg" alt=""></td>
                     <td>{{this.product.productName}}</td>
+                                                           <td>{{this.product.productPrice}}</td>
+
                     <td><button class="cart-item-count mr-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',-1)">-</button>
                     <span id="{{this.product._id}}">{{this.quantity}}</span>
                     <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}',1)">+</button></td>
+
                     <td><a href="http://" class="btn btn-danger">Remove</a>
 </td>
                 </tr>
                 {{/each}}
             </tbody>
         </table>
+        <hr>
+        <div class="float-right pr-5">
+            <h4 class="float-left mr-5">TOTAL RS: 100000000/-</h4><br>
+            <a href="/place-order" class="btn btn-success mt-3" style="width:100%;"> <b>Place Order</b></a>
+        </div>
     </div>
 </section>
 
