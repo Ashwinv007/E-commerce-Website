@@ -92,22 +92,25 @@ module.exports={
                 },
                 {
                     $unwind:'$products'
+                },
+                {
+                    $project:{
+                        item:'$products.item',
+                        quantity:'$products.quantity'
+                    }
+                },
+                {
+                    $lookup:{
+                        from: collections.PRODUCT_COLLECTION,
+                        localField:'item',
+                        foreignField:'_id',
+                        as:'product'
+                    }
                 }
-                // {
-                //     $lookup:{
-                //         from: collections.PRODUCT_COLLECTION,
-                //         let:{prodList:'$products'},
-                //         pipeline:[
-                //             {$match:{
-                //                 $expr:{
-                //                     $in:['$_id',"$$prodList"]
-
-                //             }}}],as:'cartItems'
-                //     }
-                // }
+            
                 
             ]).toArray()
-            resolve(cartItems[0].cartItems)
+            resolve(cartItems)
         })
     },
     getCartCount:(userId)=>{
