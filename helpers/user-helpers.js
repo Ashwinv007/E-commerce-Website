@@ -49,7 +49,7 @@ module.exports={
         return new Promise(async(resolve,reject)=>{
             let userCart = await db.get().collection(collections.CART_COLLECTION).findOne({user:objectId(userId)})
             if(userCart){
-                let proExist = userCart.products.findIndex(product =>product.item===proId)
+                let proExist = userCart.products.findIndex(product =>product.item==proId)
                 console.log(proExist)
                 if(proExist!=-1){
                     db.get().collection(collections.CART_COLLECTION)
@@ -65,7 +65,7 @@ module.exports={
                     db.get().collection(collections.CART_COLLECTION)
                     .updateOne({user:objectId(userId)},
                     {
-                        $push:{products:objectId(proId)}
+                        $push:{products:proObj}
                     }
                     ).then((response)=>{
                         resolve()
@@ -76,7 +76,7 @@ module.exports={
             }else{
                 let cartObj={
                     user:objectId(userId),
-                    products:[objectId(proId)]
+                    products:[proObj]
                 }
                 db.get().collection(collections.CART_COLLECTION).insertOne(cartObj).then((response)=>{
                     resolve()
