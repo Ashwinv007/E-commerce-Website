@@ -84,6 +84,12 @@ console.log('api call')
     
    })
     
+   router.post('/change-product-quantity',(req,res,next)=>{
+    userHelpers.changeProductQuantity(req.body).then((response)=>{
+      res.json(response)
+      
+    })
+   })
    
    
 
