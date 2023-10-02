@@ -74,7 +74,7 @@ router.get('/', async function(req, res, next) {
     let products = await userHelpers.getCartProducts(req.session.user._id)
     let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
     console.log(products)
-    res.render('user/cart', {products, user:req.session.user,totalValue})
+    res.render('user/cart', {products, user:req.session.user._id,totalValue})
    })
 
    router.get('/add-to-cart/:id',async (req,res)=>{
@@ -86,7 +86,9 @@ console.log('api call')
    })
     
    router.post('/change-product-quantity',(req,res,next)=>{
-    userHelpers.changeProductQuantity(req.body).then((response)=>{
+    userHelpers.changeProductQuantity(req.body).then(async(response)=>{
+      response.total = await userHelpers.getTotalAmount(req.body.user)
+
       res.json(response)
       
     })
