@@ -224,7 +224,10 @@ module.exports={
 
             db.get().collection(collections.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
                 db.get().collection(collections.CART_COLLECTION).deleteOne({user:objectId(order.userId)})
-                resolve(response.ops[0]._id)
+                // console.log("response: "+ response)
+                // console.log("instertedId: "+response.insertedId)
+                // console.log("id: "+response.insertedId._id)
+               resolve(response.insertedId)
             })
         })
     },
@@ -280,15 +283,13 @@ module.exports={
         })
     },
     generateRazorpay:(orderId,total)=>{
+        console.log('orderreceiptid: '+orderId)
         return new Promise(async(resolve,reject)=>{
             instance.orders.create({
                 amount: total,
                 currency: "INR",
-                receipt: ""+orderId,
-                // notes: {
-                //   key1: "value3",
-                //   key2: "value2"
-                // }
+                receipt: orderId,
+              
               }, function(err,order){
                 if(err){
                     console.log(err)
