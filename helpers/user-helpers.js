@@ -301,5 +301,41 @@ module.exports={
         })
 
 
+    }, 
+
+    verifyPayment:(details)=>{
+        return new Promise((resolve,reject)=>{
+            const crypto = require('crypto')
+            let hmac = crypto.createHmac('sha256','pClROqLO4CwQ5N5IjCT7KjqB')
+
+            hmac.update(details['payment[razorpay_order_id]']+'|'+details['payment[razorpay_payment_id]'])
+            console.log("orderId is:"+details['payment[razorpay_order_id]']+" & "+"paymentid is :"+details['payment[razorpay_payment_id]'])
+            hmac=hmac.digest('hex')
+            console.log(hmac)
+            if(hmac==details['payment[razorpay_signature]']){
+                console.log('resolved done')
+                resolve()
+            }else{
+                console.log('some err in verifyoayemnt')
+                reject()
+            }
+        })
+    },
+    changePaymentStatus:(orderId)=>{
+        return new Promise((resolve,reject)=>{
+            console.log(orderId)
+            console.log('reached changepayemntstatus')
+            db.get().collection(collections.ORDER_COLLECTION)
+            .updateOne({_id:objectId(orderId)},
+            
+            {
+                $set:{status:'placed'}
+            }
+            ).then(()=>{
+                console.log("done!")
+                resolve()
+            })
+
+        })
     }
 }
