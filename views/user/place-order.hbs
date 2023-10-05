@@ -108,7 +108,7 @@ var rzp1 = new Razorpay(options);
             success:(response)=>{
                 console.log(response.status)
                 if(response.status){
-                    loation.href='/order-success'
+                    location.href='/order-success'
                 }else{
                     alert('Payment failed')
                 }

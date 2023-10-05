@@ -72,7 +72,12 @@ router.get('/', async function(req, res, next) {
 
    router.get('/cart', verifyLogin,async (req,res)=>{
     let products = await userHelpers.getCartProducts(req.session.user._id)
-    let totalValue = await userHelpers.getTotalAmount(req.session.user._id)
+    let totalValue=0
+    if(products.length>0){
+      totalValue = await userHelpers.getTotalAmount(req.session.user._id)
+
+
+    }
     console.log(products)
     res.render('user/cart', {products, user:req.session.user._id,totalValue})
    })
@@ -135,9 +140,7 @@ router.post('/verify-payment',(req,res)=>{
   userHelpers.verifyPayment(req.body).then(()=>{
   userHelpers.changePaymentStatus(req.body['order[receipt]']).then(()=>{
     console.log("Payment Successfull")
-    console.log(res.status)
     res.json({status:true})
-        console.log(res.status)
 
   })
     

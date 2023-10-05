@@ -286,7 +286,7 @@ module.exports={
         console.log('orderreceiptid: '+orderId)
         return new Promise(async(resolve,reject)=>{
             instance.orders.create({
-                amount: total,
+                amount: total*100,
                 currency: "INR",
                 receipt: orderId,
               
