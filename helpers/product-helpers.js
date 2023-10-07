@@ -14,6 +14,35 @@ module.exports={
 
   },
 
+  doLogin:(adminData)=>{
+    return new Promise(async(resolve,reject)=>{
+    let loginstatus = false;
+    let response = {}
+
+    let admin = await db.get().collection(collections.ADMIN_COLLECTION).findOne({username:adminData.username})
+    if(admin){
+         bcrypt.compare(adminData.Password,admin.Password).then((status)=>{
+            if(status){
+                                console.log('login sucess')
+                                response.admin=admin
+                                response.status=true
+                                resolve(response)
+
+
+            }else{
+                console.log('Invalid PAssword')
+                resolve({status:false})
+
+            }
+         })
+    }else{
+        console.log('Admin not found')
+        resolve({status:false})
+    }
+
+})
+},
+
   getAllProducts:()=>{
     return new Promise(async(resolve,reject)=>{
       let product = await db.get().collection(collections.PRODUCT_COLLECTION).find().toArray()

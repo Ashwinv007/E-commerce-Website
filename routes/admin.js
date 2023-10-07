@@ -1,17 +1,51 @@
 var express = require('express');
 var router = express.Router();
 const productHelpers = require('../helpers/product-helpers.js');
+const verifyLogin=(req,res,next)=>{
+  if(req.session.adminLoggedIn){
+    next()
+  }else{
+    res.redirect('admin/login')
+  }
+}
 
 /* GET users listing. */
 
-router.get('/', function(req, res, next) {
+router.get('/', verifyLogin,function(req, res, next) {
    productHelpers.getAllProducts().then((product)=>{
     res.render('admin/view-products', {admin:true , product})
 
 
    })
 });
+router.get('/login', (req,res)=>{
+  if(req.session.admin){
+    res.redirect('/admin')
+  }else{
+    res.setHeader('Cache-Control', 'no-store, must-revalidate');
 
+
+    res.render('admin/login', {'loginErr':req.session.adminLoginErr})
+    req.session.adminLoginErr=false
+
+
+  }
+ })
+
+ router.post('/login', (req,res)=>{
+  productHelpers.doLogin(req.body).then((response)=>{
+    if(response.status){
+      req.session.admin = response.admin
+      req.session.adminLoggedIn = true
+      res.redirect('/admin')
+    }else{
+      req.session.adminLoginErr = "Invalid username or Password"
+      res.redirect('/login')
+    }
+     console.log(response)
+  })
+  
+ })
 
 
 router.get('/add-product', function(req,res){
