@@ -1,6 +1,8 @@
 var db = require('../config/connection')
 const collections = require('../config/collections')
 var objectId = require('mongodb').ObjectId
+const bcrypt = require('bcrypt')
+
 module.exports={
 
   addProduct:(product,callback)=>{
@@ -21,23 +23,23 @@ module.exports={
 
     let admin = await db.get().collection(collections.ADMIN_COLLECTION).findOne({username:adminData.username})
     if(admin){
-         bcrypt.compare(adminData.Password,admin.Password).then((status)=>{
-            if(status){
+         bcrypt.compare(adminData.Password,admin.password).then((adminStatus)=>{
+            if(adminStatus){
                                 console.log('login sucess')
                                 response.admin=admin
-                                response.status=true
+                                response.adminStatus=true
                                 resolve(response)
 
 
             }else{
                 console.log('Invalid PAssword')
-                resolve({status:false})
+                resolve({adminStatus:false})
 
             }
          })
     }else{
         console.log('Admin not found')
-        resolve({status:false})
+        resolve({adminStatus:false})
     }
 
 })

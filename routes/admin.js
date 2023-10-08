@@ -5,7 +5,7 @@ const verifyLogin=(req,res,next)=>{
   if(req.session.adminLoggedIn){
     next()
   }else{
-    res.redirect('admin/login')
+    res.redirect('/admin/login')
   }
 }
 
@@ -20,7 +20,7 @@ router.get('/', verifyLogin,function(req, res, next) {
 });
 router.get('/login', (req,res)=>{
   if(req.session.admin){
-    res.redirect('/admin')
+    res.redirect('/')
   }else{
     res.setHeader('Cache-Control', 'no-store, must-revalidate');
 
@@ -34,13 +34,13 @@ router.get('/login', (req,res)=>{
 
  router.post('/login', (req,res)=>{
   productHelpers.doLogin(req.body).then((response)=>{
-    if(response.status){
+    if(response.adminStatus){
       req.session.admin = response.admin
       req.session.adminLoggedIn = true
       res.redirect('/admin')
     }else{
       req.session.adminLoginErr = "Invalid username or Password"
-      res.redirect('/login')
+      res.redirect('/admin/login')
     }
      console.log(response)
   })
@@ -48,11 +48,11 @@ router.get('/login', (req,res)=>{
  })
 
 
-router.get('/add-product', function(req,res){
+router.get('/add-product', verifyLogin,function(req,res){
     res.render('admin/add-product', {admin:true})
 })
 
-router.post('/add-product', (req,res)=>{
+router.post('/add-product', verifyLogin,(req,res)=>{
   console.log(req.body)
   console.log(req.files.productImage)
   
@@ -71,7 +71,7 @@ router.post('/add-product', (req,res)=>{
   } )
 })
 
-router.get('/delete-product/:id', function(req,res){
+router.get('/delete-product/:id',verifyLogin, function(req,res){
   let proId = req.params.id
   console.log(proId)
   productHelpers.deleteProduct(proId).then(()=>{
@@ -79,14 +79,14 @@ router.get('/delete-product/:id', function(req,res){
   })
 })
 
-router.get('/edit-product/:id', async (req,res)=>{
+router.get('/edit-product/:id', verifyLogin,async (req,res)=>{
   let product =await productHelpers.getProductDetails(req.params.id)
   console.log(product)
   res.render('admin/edit-product',{product})
 
 })
 
-router.post('/edit-product/:id',(req,res)=>{
+router.post('/edit-product/:id',verifyLogin,(req,res)=>{
   let id = req.params.id
 
   productHelpers.updateProduct(id,req.body).then(()=>{
