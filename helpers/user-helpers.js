@@ -125,7 +125,11 @@ module.exports={
             let count=0
             let cart = await db.get().collection(collections.CART_COLLECTION).findOne({user:objectId(userId)})
             if(cart){
-                count=cart.products.length
+                cart.products.forEach((product) => {
+                    count += product.quantity;
+                  });
+
+                // count=cart.products.length
             }
             resolve(count)
         })
