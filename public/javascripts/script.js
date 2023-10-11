@@ -10,3 +10,16 @@ function addToCart(proId){
         }
     })
 }
+
+function search(input){
+    console.log(input.value)
+    $.ajax({
+        url: '/find-product/'+input.value,
+        method: 'get',
+        // data: {proId: proId},
+         success: function(res){
+            $('#view-products').html(res);
+      }
+    })
+    
+}

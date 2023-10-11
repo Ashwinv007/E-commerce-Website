@@ -1,4 +1,57 @@
+{{#if matchingProducts}}
+
 <section>
+  <div id="view-products">
+
+    <div class="container mt-5">
+        <div class="row">
+            {{#if matchingProducts.length}}
+                {{#each matchingProducts}}
+                    <div class="col-md-3 p-3">
+                        <div class="card" style="width: 15rem; height: 24rem;">
+                            <img class="card-img-top" src="/product-images/{{this._id}}.jpg" alt="Card image cap" style="height: 12rem;">
+                            <div class="card-body">
+                                <h5 class="card-title">{{this.productName}}</h5>
+                                <p class="card-text">{{this.productDescription}}</p>
+                                <h5 class="card-title">{{this.productPrice}}</h5>
+                                <!-- Add other product details here -->
+                                <button class="btn btn-primary" onclick="addToCart('{{this._id}}')">Add to Cart</button>
+                            </div>
+                        </div>
+                    </div>
+                {{/each}}
+            {{else}}
+            <div id="view-products">
+                              <h1>No products found</h1>
+
+
+            </div>
+            {{/if}}
+            
+        </div>
+    </div>
+      </div>
+
+</section>
+
+{{else}}
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+<section>
+    <div id="view-products">
+
     <div class="container mt-5">
     <div class="row">
       {{#each product}}
@@ -18,4 +71,9 @@
 
     </div>
     </div>
+    </div>
+
 </section>
+
+
+            {{/if}}

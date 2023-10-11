@@ -93,6 +93,16 @@ console.log('api call')
     })
     
    })
+
+   router.get('/find-product/:value',async (req,res)=>{
+    console.log('find call')
+        userHelpers.findProducts(req.params.value).then((matchingProducts)=>{
+          res.render('user/view-products', {matchingProducts})
+          
+          // res.json({status:true})
+        })
+        
+       })
     
    router.post('/change-product-quantity',(req,res,next)=>{
     userHelpers.changeProductQuantity(req.body).then(async(response)=>{

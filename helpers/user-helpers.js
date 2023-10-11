@@ -341,5 +341,25 @@ module.exports={
             })
 
         })
-    }
+    },
+    findProducts:(searchTerm)=>{
+        return new Promise(async(resolve,reject)=>{
+          let product = await db.get().collection(collections.PRODUCT_COLLECTION).find().toArray()
+          let matchingProducts = [];
+
+          product.forEach(item => {
+            console.log(product)
+            console.log(item.productName)
+            console.log(searchTerm)
+            if (item.productName.toLowerCase().startsWith(searchTerm.toLowerCase())) {
+              matchingProducts.push(item);
+            }
+          });
+          console.log('///***///'+matchingProducts)
+
+          resolve(matchingProducts)
+    
+    
+    })
+      },
 }
