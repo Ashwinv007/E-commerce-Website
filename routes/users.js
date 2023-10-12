@@ -98,7 +98,13 @@ console.log('api call')
     console.log('find call')
         userHelpers.findProducts(req.params.value).then((matchingProducts)=>{
           res.render('user/view-products', {matchingProducts})
-          
+//  res.render('user/view-products', { matchingProducts }, (err, html) => {
+//       if (err) {
+//         console.log(err);
+//         return res.status(500).send('Error rendering view-products');
+//       }
+//       res.json({ viewProductsHTML: html });
+//     });          
           // res.json({status:true})
         })
         

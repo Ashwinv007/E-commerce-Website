@@ -17,9 +17,15 @@ function search(input){
         url: '/find-product/'+input.value,
         method: 'get',
         // data: {proId: proId},
-         success: function(res){
-            $('#view-products').html(res);
-      }
+    //      success: function(res){
+    //         $('#view-products').html(res);
+    //   }
+    // dataType: 'json',
+    success: function (res) {
+                    var viewProductsHtml = $(res).find('#view-products').html();
+
+                    $('#view-products').html(viewProductsHtml);
+                }
     })
     
 }
