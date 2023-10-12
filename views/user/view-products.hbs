@@ -5,9 +5,12 @@
 
     <div class="container mt-5">
         <div class="row">
-            {{#if matchingProducts.length }}
+
+            {{#if mpStatus }}
+        
+
                 {{#each matchingProducts}}
-                    <div class="col-md-3 p-3">
+                    <div class="col-md-3 p-3" >
                         <div class="card" style="width: 15rem; height: 24rem;">
                             <img class="card-img-top" src="/product-images/{{this._id}}.jpg" alt="Card image cap" style="height: 12rem;">
                             <div class="card-body">
@@ -20,12 +23,14 @@
                         </div>
                     </div>
                 {{/each}}
+
+
+
+
             {{else}}
-            <div id="view-products">
-                              <h1>No products found</h1>
-
-
-            </div>
+            
+            <h1>No products found</h1>
+                              
             {{/if}}
             
         </div>

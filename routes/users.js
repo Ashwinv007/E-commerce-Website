@@ -97,15 +97,17 @@ console.log('api call')
    router.get('/find-product/:value',async (req,res)=>{
     console.log('find call')
         userHelpers.findProducts(req.params.value).then((matchingProducts)=>{
-          res.render('user/view-products', {matchingProducts})
-//  res.render('user/view-products', { matchingProducts }, (err, html) => {
-//       if (err) {
-//         console.log(err);
-//         return res.status(500).send('Error rendering view-products');
-//       }
-//       res.json({ viewProductsHTML: html });
-//     });          
-          // res.json({status:true})
+          if(matchingProducts.length===0){
+                        console.log("No matching products found.");
+
+            res.render('user/view-products', {matchingProducts, mpStatus:true})
+
+
+          }else{
+            res.render('user/view-products', {matchingProducts, mpStatus:false})
+
+          }
+
         })
         
        })
