@@ -13,19 +13,32 @@ function addToCart(proId){
 
 function search(input){
     console.log(input.value)
-    $.ajax({
-        url: '/find-product/'+input.value,
-        method: 'get',
-        // data: {proId: proId},
-    //      success: function(res){
-    //         $('#view-products').html(res);
-    //   }
-    // dataType: 'json',
-    success: function (res) {
-                    var viewProductsHtml = $(res).find('#view-products').html();
+    if (input.value.trim() === '') {
+        // Redirect to the homepage (change the URL as needed)
+        $.ajax({
+            url: '/',
+            method: 'get',
 
-                    $('#view-products').html(viewProductsHtml);
-                }
-    })
+            success: function (res) {
+                var viewProductsHtml = $(res).find('#view-products').html();
+
+                $('#view-products').html(viewProductsHtml);
+            }
+
+        })
+    }else{
+        $.ajax({
+            url: '/find-product/'+input.value,
+            method: 'get',
+           
+        success: function (res) {
+                        var viewProductsHtml = $(res).find('#view-products').html();
+    
+                        $('#view-products').html(viewProductsHtml);
+                    }
+        })
+
+    }
+    
     
 }
