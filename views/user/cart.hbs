@@ -1,4 +1,4 @@
-<section>
+<section id="cartProductList">
     <div class="container">
         <table class="table mt-5">
             <thead>
@@ -10,7 +10,7 @@
 
                 </tr>
             </thead>
-            <tbody>
+            <tbody >
                 {{#each products}}
                 <tr>
                     <td><img style="width:70px;height:70px" src="/product-images/{{this.product._id}}.jpg" alt=""></td>
@@ -21,7 +21,8 @@
                     <span id="{{this.product._id}}">{{this.quantity}}</span>
                     <button class="cart-item-count ml-3" onclick="changeQuantity('{{this._id}}','{{this.product._id}}','{{../user}}',1)">+</button></td>
 
-                    <td><a href="http://" class="btn btn-danger">Remove</a>
+                    <td>                    <button class="btn btn-danger" onclick="removeProductFromCart('{{this._id}}','{{this.product._id}}','{{../user}}',-1)">Remove</button></td>
+
 </td>
                 </tr>
                 {{/each}}
@@ -37,6 +38,34 @@
 
 
 <script>
+     function removeProductFromCart(cartId,proId,userId,count){
+        count =parseInt(count)
+        $.ajax({
+            url:'/change-product-quantity',
+            data:{
+                user:userId,
+                cart:cartId,
+                product:proId,
+                count:count,
+                quantity:1
+            },
+            method:'post',
+            success:(response)=>{
+                if(response.removeProduct){
+                     alert("Product removed from cart")
+                        $("#cartProductList").load(" #cartProductList");
+
+
+
+
+                }else{
+                    document.getElementById(proId).innerHTML=quantity+count
+                    document.getElementById('total').innerHTML=response.total
+                }
+               
+            }
+        })
+    }
     function changeQuantity(cartId,proId,userId,count){
         let quantity=parseInt(document.getElementById(proId).innerHTML)
         count =parseInt(count)
@@ -53,7 +82,10 @@
             success:(response)=>{
                 if(response.removeProduct){
                      alert("Product removed from cart")
-                location.reload()
+                        $("#cartProductList").load(" #cartProductList");
+
+
+
 
                 }else{
                     document.getElementById(proId).innerHTML=quantity+count

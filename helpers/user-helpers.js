@@ -198,9 +198,16 @@ module.exports={
                         total:{$sum:{$multiply: ['$quantity',{ $toDouble: '$product.productPrice' }]}}
                     }
                 }
-            
                 
             ]).toArray()
+            console.log(total)
+            if (!total || total.length === 0 || total[0].total === undefined) {
+                resolve(0); // Resolve with 0 if total is undefined or empty
+            } else {
+                console.log(total);
+                resolve(total[0].total);
+            }
+
             resolve(total[0].total)
         })
         

@@ -41,7 +41,7 @@ router.get('/', async function(req, res, next) {
     res.render('user/signup')
    
 
-    res.redirect('/')
+    // res.redirect('/')
    })
 
    router.post('/signup', (req,res)=>{
@@ -49,6 +49,7 @@ router.get('/', async function(req, res, next) {
       console.log(response)
       req.session.user=response
       req.session.userLoggedIn=true
+      res.redirect('/')
     })
   })
 
@@ -117,7 +118,7 @@ console.log('api call')
       response.total = await userHelpers.getTotalAmount(req.body.user)
 
       res.json(response)
-      
+     
     })
    })
    
