@@ -1,4 +1,4 @@
-<section>
+<section id="ordersList">
     <div class="container">
         {{!-- <div class="row mt-4">
             <a href="admin/add-product" class = 'btn btn-success ml-auto'>Add Product</a>
@@ -30,10 +30,22 @@
             <td>{{this.paymentMethod}}</td>
             <td>{{this.status}}</td>
 
+          
+
 <td>
   <a href="/view-order-products/{{this._id}}" class ="btn btn-primary">View Products</a>
    {{!-- <a href="/admin/delete-product/{{this._id}}" class ="btn btn-danger" onclick="return confirm('Are you sure to delete {{this.productName}}?')">Delete</a> </td> --}}
+  {{#if this.userAction}}
 
+  <button onclick="cancelOrderedProducts({{this._id}})" class ="btn btn-danger">Cancel</button>
+              {{!-- <a href="/cancel-ordered-products/'{{this._id}}'" ></a> --}}
+
+              {{else}}
+                <button onclick="reOrderedProducts('{{this._id}}')" class ="btn btn-success">Reorder</button>
+
+              {{!-- <a href="/reorder-products/'{{this._id}}'" class ="btn btn-"></a> --}}
+
+{{/if}}
     </tr>
     {{/each}}
   
@@ -42,3 +54,61 @@
 </table>
     </div>
 </section>
+
+<script>
+     function cancelOrderedProducts(cancelOrderId){
+      console.log('hi breo')
+        $.ajax({
+            url:'/cancel-ordered-products',
+            data:{
+                orderId:orderId
+            },
+            method:'post',
+            success:(response)=>{
+                if(response.removeOrder){
+                     alert(response.message)
+                        $("#ordersList").load(" #ordersList");
+
+
+
+
+                }else{
+                      alert(response.message)
+                        $("#ordersList").load(" #ordersList");
+
+                    
+                }
+               
+            }
+        })
+    }
+    function changeQuantity(cartId,proId,userId,count){
+        let quantity=parseInt(document.getElementById(proId).innerHTML)
+        count =parseInt(count)
+        $.ajax({
+            url:'/change-product-quantity',
+            data:{
+                user:userId,
+                cart:cartId,
+                product:proId,
+                count:count,
+                quantity:quantity
+            },
+            method:'post',
+            success:(response)=>{
+                if(response.removeProduct){
+                     alert("Product removed from cart")
+                        $("#cartProductList").load(" #cartProductList");
+
+
+
+
+                }else{
+                    document.getElementById(proId).innerHTML=quantity+count
+                    document.getElementById('total').innerHTML=response.total
+                }
+               
+            }
+        })
+    }
+</script>

@@ -217,6 +217,15 @@ module.exports={
     placeOrder:(order,products,total)=>{
         return new Promise(async(resolve,reject)=>{
             let status = order['payment-method']==='COD'?'placed':'pending'
+            let cancelOrder= false;
+            let productDelivered = false;
+            if(status === 'placed'){
+                 cancelOrder = true;
+            }else if(status === 'pending'){
+                cancelOrder = false;
+            }else{
+                 productDelivered = true;
+            }
             let orderObj={
                 deliveryDetails:{
                     mobile:order.mobile,
@@ -229,6 +238,8 @@ module.exports={
                 products:products,
                 totalAmount:total,
                 status:status,
+                userAction:cancelOrder,
+                productDelivered:productDelivered,
                 date:new Date()
 
             }
@@ -260,6 +271,25 @@ module.exports={
         })
 
     },
+    cancelOrderProducts: (orderId) => {
+        return new Promise(async (resolve, reject) => {
+            let orderCanceled = false
+            try {
+                await db.get().collection(collections.ORDER_COLLECTION).deleteOne(
+                    { _id: objectId(orderId) },
+                );orderCanceled = true
+    
+                if (orderCanceled) {
+                    resolve({ removeOrder: true, message: 'Order cancelled successfully' });
+                } else {
+                    resolve({ removeOrder: false, message: 'Order not found or already cancelled' });
+                }
+            } catch (error) {
+                reject(error);
+            }
+        });
+    },
+    
     getOrderProducts:(orderId)=>{
         return new Promise(async(resolve,reject)=>{
             let orderItems = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
@@ -340,8 +370,9 @@ module.exports={
             .updateOne({_id:objectId(orderId)},
             
             {
-                $set:{status:'placed'}
-            }
+                $set:{userAction: true,
+                    status:'placed'
+            }            }
             ).then(()=>{
                 console.log("done!")
                 resolve()
