@@ -290,6 +290,14 @@ module.exports={
             }
         });
     },
+    reOrderProducts: (reOrderId)=>{
+        return new Promise(async(resolve, reject) =>{
+            let orderDetails=await db.get().collection(collections.ORDER_COLLECTION)
+            .find({_id:objectId(reOrderId)}).toArray()
+            console.log('hi',orderDetails)
+            resolve(orderDetails)
+        })
+    },
     
     getOrderProducts:(orderId)=>{
         return new Promise(async(resolve,reject)=>{

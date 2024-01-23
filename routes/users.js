@@ -158,6 +158,56 @@ router.post('/cancel-ordered-products',async(req,res)=>{
   res.json(canceledOrder)
   // res.render('user/view-order-products',{user:req.session.user,products})
 })
+
+router.get('/reorder-products/:reOrderId', (req, res) => {
+  userHelpers
+    .reOrderProducts(req.params.reOrderId)
+    .then((reOrderDetails) => {
+      // Check if reOrderDetails is defined
+      if (reOrderDetails && reOrderDetails.length > 0) {
+        var firstProduct = reOrderDetails[0];
+        if (firstProduct.deliveryDetails) {
+          var address = firstProduct.deliveryDetails.address;
+          var pincode = firstProduct.deliveryDetails.pincode;
+          var mobile = firstProduct.deliveryDetails.mobile;
+          var totalAmount = firstProduct.totalAmount;
+
+          // Constructing the URL with parameters
+          var url =
+            '/place-order?address=' +
+            encodeURIComponent(address) +
+            '&pincode=' +
+            encodeURIComponent(pincode) +
+            '&mobile=' +
+            encodeURIComponent(mobile) +
+            '&totalAmount=' +
+            encodeURIComponent(totalAmount);
+
+          // Send JSON response with reOrderDetails
+        
+        }
+        // Pass the values to the HBS template
+        res.render('user/place-order', {
+          address: address,
+          pincode: pincode,
+          mobile: mobile,
+          totalAmount: totalAmount,
+        });
+
+        // Send JSON response with reOrderDetails
+
+        // Include a script in the response to perform the redirection on the client side
+      } else {
+        // Handle the case where reOrderDetails is undefined
+        res.status(404).json({ error: 'Reorder details not found' });
+      }
+    })
+    .catch((error) => {
+      console.error(error);
+      res.status(500).json({ error: 'Internal Server Error' });
+    });
+});
+
 router.get('/view-order-products/:id',async(req,res)=>{
   let products = await userHelpers.getOrderProducts(req.params.id)
   res.render('user/view-order-products',{user:req.session.user,products})

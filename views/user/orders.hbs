@@ -41,9 +41,9 @@
               {{!-- <a href="/cancel-ordered-products/'{{this._id}}'" ></a> --}}
 
               {{else}}
-                <button onclick="reOrderedProducts('{{this._id}}')" class ="btn btn-success">Reorder</button>
+                {{!-- <button onclick="reOrderedProducts('{{this._id}}')" class ="btn btn-"></button> --}}
 
-              {{!-- <a href="/reorder-products/'{{this._id}}'" class ="btn btn-"></a> --}}
+              <a href="/reorder-products/{{this._id}}" class ="btn btn-success">Reorder</a> 
 
 {{/if}}
     </tr>
@@ -83,33 +83,5 @@
             }
         })
     }
-    function changeQuantity(cartId,proId,userId,count){
-        let quantity=parseInt(document.getElementById(proId).innerHTML)
-        count =parseInt(count)
-        $.ajax({
-            url:'/change-product-quantity',
-            data:{
-                user:userId,
-                cart:cartId,
-                product:proId,
-                count:count,
-                quantity:quantity
-            },
-            method:'post',
-            success:(response)=>{
-                if(response.removeProduct){
-                     alert("Product removed from cart")
-                        $("#cartProductList").load(" #cartProductList");
-
-
-
-
-                }else{
-                    document.getElementById(proId).innerHTML=quantity+count
-                    document.getElementById('total').innerHTML=response.total
-                }
-               
-            }
-        })
-    }
+    
 </script>
