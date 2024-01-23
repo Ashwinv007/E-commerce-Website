@@ -274,6 +274,7 @@ module.exports={
     cancelOrderProducts: (orderId) => {
         return new Promise(async (resolve, reject) => {
             let orderCanceled = false
+            console.log(orderId)
             try {
                 await db.get().collection(collections.ORDER_COLLECTION).deleteOne(
                     { _id: objectId(orderId) },

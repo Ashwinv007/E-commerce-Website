@@ -154,7 +154,7 @@ router.get('/orders',async(req,res)=>{
   res.render('user/orders',{user:req.session.user,orders})
 })
 router.post('/cancel-ordered-products',async(req,res)=>{
-  let canceledOrder = await userHelpers.cancelOrderProducts(req.params.orderId)
+  let canceledOrder = await userHelpers.cancelOrderProducts(req.body.cancelOrderId)
   res.json(canceledOrder)
   // res.render('user/view-order-products',{user:req.session.user,products})
 })
