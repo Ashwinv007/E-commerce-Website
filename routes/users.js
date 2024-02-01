@@ -128,9 +128,38 @@ console.log('api call')
    })
    
 router.post('/place-order',async(req,res)=>{
-  let products = await userHelpers.getCartProductList(req.body.userId)
-  let totalPrice = await userHelpers.getTotalAmount(req.body.userId)
-  userHelpers.placeOrder(req.body,products,totalPrice).then((orderId)=>{
+  let products;
+    let totalPrice ;
+    let reOrderStatus = false
+
+  if (!req.body.reOrder){
+    console.log('hi bro')
+
+    products = await userHelpers.getCartProductList(req.body.userId)
+    totalPrice = await userHelpers.getTotalAmount(req.body.userId)
+    console.log('totalpeice is: ', totalPrice)
+    
+
+      }else{
+        reOrderStatus = true
+        let reOrderDetails = await userHelpers.reOrderProducts(req.body.reOrder);
+    console.log("hi reorder: ",req.body.reOrder)
+      if (reOrderDetails && reOrderDetails.length > 0) {
+         products = reOrderDetails[0].products;
+         console.log('check: ',products)
+         totalPrice = reOrderDetails[0].totalAmount;
+        // await userHelpers.cancelOrderProducts(req.body.reOrder)
+        console.log('retotalpeice is: ', totalPrice)
+
+        
+      }
+
+
+
+  }
+
+ 
+  userHelpers.placeOrder(req.body,products,totalPrice,reOrderStatus,req.body.reOrder).then((orderId)=>{
     console.log("order from user"+orderId)
     if(req.body['payment-method']==='COD'){
       res.json({codSuccess:true})
@@ -145,11 +174,11 @@ router.post('/place-order',async(req,res)=>{
   console.log(req.body)
 })
 
-router.get('/order-success',(req,res)=>{
+router.get('/order-success',verifyLogin,(req,res)=>{
   res.render('user/order-success',{user:req.session.user})
 })
 
-router.get('/orders',async(req,res)=>{
+router.get('/orders',verifyLogin,async(req,res)=>{
   let orders = await userHelpers.getUserOrders(req.session.user._id)
   res.render('user/orders',{user:req.session.user,orders})
 })
@@ -171,17 +200,18 @@ router.get('/reorder-products/:reOrderId', (req, res) => {
           var pincode = firstProduct.deliveryDetails.pincode;
           var mobile = firstProduct.deliveryDetails.mobile;
           var totalAmount = firstProduct.totalAmount;
+          console.log('fptotal is: ',totalAmount)
 
           // Constructing the URL with parameters
-          var url =
-            '/place-order?address=' +
-            encodeURIComponent(address) +
-            '&pincode=' +
-            encodeURIComponent(pincode) +
-            '&mobile=' +
-            encodeURIComponent(mobile) +
-            '&totalAmount=' +
-            encodeURIComponent(totalAmount);
+          // var url =
+          //   '/place-order?address=' +
+          //   encodeURIComponent(address) +
+          //   '&pincode=' +
+          //   encodeURIComponent(pincode) +
+          //   '&mobile=' +
+          //   encodeURIComponent(mobile) +
+          //   '&totalAmount=' +
+          //   encodeURIComponent(totalAmount);
 
           // Send JSON response with reOrderDetails
         
@@ -189,16 +219,15 @@ router.get('/reorder-products/:reOrderId', (req, res) => {
         // Pass the values to the HBS template
         res.render('user/place-order', {
           address: address,
+          user: req.session.user,
           pincode: pincode,
           mobile: mobile,
           totalAmount: totalAmount,
+          reOrder:req.params.reOrderId
         });
 
-        // Send JSON response with reOrderDetails
 
-        // Include a script in the response to perform the redirection on the client side
       } else {
-        // Handle the case where reOrderDetails is undefined
         res.status(404).json({ error: 'Reorder details not found' });
       }
     })

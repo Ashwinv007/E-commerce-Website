@@ -214,7 +214,7 @@ module.exports={
         
 
     },
-    placeOrder:(order,products,total)=>{
+    placeOrder:(order,products,total,reOrderStatus,reOrderId)=>{
         return new Promise(async(resolve,reject)=>{
             let status = order['payment-method']==='COD'?'placed':'pending'
             let cancelOrder= false;
@@ -245,7 +245,15 @@ module.exports={
             }
 
             db.get().collection(collections.ORDER_COLLECTION).insertOne(orderObj).then((response)=>{
-                db.get().collection(collections.CART_COLLECTION).deleteOne({user:objectId(order.userId)})
+                if(reOrderStatus){
+                    console.log('reOrder true', reOrderId)
+                     db.get().collection(collections.ORDER_COLLECTION).deleteOne(
+                        { _id: objectId(reOrderId) })
+                }else{
+                    console.log('false rorder')
+                    db.get().collection(collections.CART_COLLECTION).deleteOne({user:objectId(order.userId)})
+
+                }
                 // console.log("response: "+ response)
                 // console.log("instertedId: "+response.insertedId)
                 // console.log("id: "+response.insertedId._id)
