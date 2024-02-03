@@ -306,7 +306,19 @@ module.exports={
             resolve(orderDetails)
         })
     },
-    
+    trackOrderDetails: (orderId)=>{
+        return new Promise(async(resolve,reject)=>{
+            let trackOrder = await db.get().collection(collections.ORDER_COLLECTION).find({_id:objectId(orderId)}).toArray()
+            // if (reOrderDetails && reOrderDetails.length > 0) {
+            //     var firstProduct = reOrderDetails[0];
+            //     if (firstProduct.deliveryDetails) {
+            //       var address = firstProduct.deliveryDetails.address;
+            //       var pincode = firstProduct.deliveryDetails.pincode;
+            //       var mobile = firstProduct.deliveryDetails.mobile;
+            //       var totalAmount = firstProduct.totalAmount;}
+            resolve(trackOrder[0].deliveryDetails.location)
+        })
+    },
     getOrderProducts:(orderId)=>{
         return new Promise(async(resolve,reject)=>{
             let orderItems = await db.get().collection(collections.ORDER_COLLECTION).aggregate([
