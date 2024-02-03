@@ -241,6 +241,11 @@ router.get('/view-order-products/:id',async(req,res)=>{
   let products = await userHelpers.getOrderProducts(req.params.id)
   res.render('user/view-order-products',{user:req.session.user,products})
 })
+
+router.get('/track-order-delivery/:id',async(req,res)=>{
+  let trackOrder = await userHelpers.trackOrderDetails(req.params.id)
+  res.render('user/track-order',{user:req.session.user,trackOrder})
+})
 router.post('/verify-payment',(req,res)=>{
   console.log(req.body)
   userHelpers.verifyPayment(req.body).then(()=>{
