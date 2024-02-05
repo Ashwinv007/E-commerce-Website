@@ -231,6 +231,23 @@ module.exports={
                     mobile:order.mobile,
                     address:order.address,
                     pincode:order.pincode,
+                    location:{
+                        placed:true,
+                        confirmed:false,
+                        packed:false,
+                        warehouse:false,
+                        courier:false,
+                        outForDelivery:false,
+                        delivered:false,
+                        current1:true,
+                        current2:false,
+                        current3:false,
+                        current4:false,
+                        current5:false,
+                        current6:false,
+                        current:false,
+
+                    },
 
                 },
                 userId:objectId(order.userId),

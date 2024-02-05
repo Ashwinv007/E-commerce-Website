@@ -244,6 +244,7 @@ router.get('/view-order-products/:id',async(req,res)=>{
 
 router.get('/track-order-delivery/:id',async(req,res)=>{
   let trackOrder = await userHelpers.trackOrderDetails(req.params.id)
+  console.log('locate hi', trackOrder)
   res.render('user/track-order',{user:req.session.user,trackOrder})
 })
 router.post('/verify-payment',(req,res)=>{
