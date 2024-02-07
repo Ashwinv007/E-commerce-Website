@@ -3,6 +3,7 @@
 
 
 <section>
+  <p>{{trackOrder.current6}}</p>
      <div class="container py-5">
   <div class="row">
 
@@ -10,11 +11,11 @@
       <div id="tracking-pre"></div>
       <div id="tracking">
         <div class="tracking-list">
-         {{#if trackOrder.location.placed}}
+         {{#if trackOrder.placed}}
           <div class="tracking-item">
                         <div class="tracking-icon status-intransit">
 
-            {{#if current}}
+            {{#if trackOrder.current1}}
                         <div class="tracking-icon status-current blinker">
 {{/if}}
 {{else}}
@@ -29,11 +30,11 @@
             <div class="tracking-date"><img src="https://raw.githubusercontent.com/shajo/portfolio/a02c5579c3ebe185bb1fc085909c582bf5fad802/delivery.svg" class="img-responsive" alt="order-placed" /></div>
             <div class="tracking-content">Order Placed<span>09 Aug 2025, 10:00am</span></div>
           </div>
-          {{#if confirmed}}
+          {{#if trackOrder.confirmed}}
           <div class="tracking-item">
                         <div class="tracking-icon status-intransit">
 
-            {{#if current}}
+            {{#if trackOrder.current2}}
                         <div class="tracking-icon status-current blinker">
 {{/if}}
 {{else}}
@@ -48,11 +49,11 @@
             <div class="tracking-date"><img src="https://raw.githubusercontent.com/shajo/portfolio/a02c5579c3ebe185bb1fc085909c582bf5fad802/delivery.svg" class="img-responsive" alt="order-placed" /></div>
             <div class="tracking-content">Order Confirmed<span>09 Aug 2025, 10:30am</span></div>
           </div>
-          {{#if packed}}
+          {{#if trackOrder.packed}}
           <div class="tracking-item">
                         <div class="tracking-icon status-intransit">
 
-            {{#if current}}
+            {{#if trackOrder.current3}}
                         <div class="tracking-icon status-current blinker">
 {{/if}}
 {{else}}
@@ -67,11 +68,11 @@
             <div class="tracking-date"><img src="https://raw.githubusercontent.com/shajo/portfolio/a02c5579c3ebe185bb1fc085909c582bf5fad802/delivery.svg" class="img-responsive" alt="order-placed" /></div>
             <div class="tracking-content">Packed the product<span>09 Aug 2025, 12:00pm</span></div>
           </div>
-         {{#if warehouse}}
+         {{#if trackOrder.warehouse}}
           <div class="tracking-item">
                         <div class="tracking-icon status-intransit">
 
-            {{#if current}}
+            {{#if trackOrder.current4}}
                         <div class="tracking-icon status-current blinker">
 {{/if}}
 {{else}}
@@ -86,11 +87,11 @@
             <div class="tracking-date"><img src="https://raw.githubusercontent.com/shajo/portfolio/a02c5579c3ebe185bb1fc085909c582bf5fad802/delivery.svg" class="img-responsive" alt="order-placed" /></div>
             <div class="tracking-content">Arrived in the warehouse<span>10 Aug 2025, 02:00pm</span></div>
           </div>
-         {{#if courier}}
+         {{#if trackOrder.courier}}
           <div class="tracking-item">
                         <div class="tracking-icon status-intransit">
 
-            {{#if current}}
+            {{#if trackOrder.current5}}
                         <div class="tracking-icon status-current blinker">
 {{/if}}
 {{else}}
@@ -106,11 +107,11 @@
             <div class="tracking-content">Near by Courier facility<span>10 Aug 2025, 03:00pm</span></div>
           </div>
 
-          {{#if outForDelivery}}
+          {{#if trackOrder.outForDelivery}}
           <div class="tracking-item">
                         <div class="tracking-icon status-intransit">
 
-            {{#if current}}
+            {{#if trackOrder.current6}}
                         <div class="tracking-icon status-current blinker">
 {{/if}}
 {{else}}
@@ -125,11 +126,11 @@
             <div class="tracking-date"><img src="https://raw.githubusercontent.com/shajo/portfolio/a02c5579c3ebe185bb1fc085909c582bf5fad802/delivery.svg" class="img-responsive" alt="order-placed" /></div>
             <div class="tracking-content">Out for Delivery<span>12 Aug 2025, 05:00pm</span></div>
           </div>
-         {{#if delivered}}
+         {{#if trackOrder.delivered}}
           <div class="tracking-item">
                         <div class="tracking-icon status-intransit">
 
-            {{#if current}}
+            {{#if trackOrder.current7}}
                         <div class="tracking-icon status-current blinker">
 {{/if}}
 {{else}}

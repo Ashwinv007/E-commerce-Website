@@ -245,7 +245,7 @@ module.exports={
                         current4:false,
                         current5:false,
                         current6:false,
-                        current:false,
+                        current7:false,
 
                     },
 
